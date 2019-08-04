@@ -5,8 +5,13 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.TreeMap;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 import java.util.stream.Stream;
+
+import javax.swing.text.StyledEditorKit.ForegroundAction;
 
 
 
@@ -19,77 +24,98 @@ public class Main {
     Sale saleObj = new Sale(Integer.parseInt(records[0]), records[1], records[2]);
 		return saleObj;
 	}
+	
+	public static void getTime(String section, long time) {
+		double convert = (double) time / 1_000_000_000;
+		System.out.println(section + " => " + convert);
+	}
+	
+	public static LinkedList<Sale> readFileStream(String filename) {
+		LinkedList<Sale> lkl = new LinkedList<Sale>();
+		try(Stream<String> stream = Files.lines(Paths.get(filename))) {
+			stream.forEach((row) -> {
+	    	Sale saleObj = getRecord(row);
+	    	lkl.add(saleObj);
+	    });
+			
+	  } catch(IOException e) {
+	      e.printStackTrace();
+	  }
+		return lkl;
+	}
+	
+	public static void testHashMap(LinkedList<Sale> lkl, HashMap<Integer, Sale> hmap) {
+		long startTime = System.nanoTime();
 
+		for (Sale saleObj : lkl) {
+			hmap.put(saleObj.getId(), saleObj);
+		}
+
+		hmap.get(60844);
+		long endTime = System.nanoTime();
+
+		long duration = (endTime - startTime);
+
+		getTime("Hash Map", duration);
+	}
+	
+	public static void testLinkedHashMap(LinkedList<Sale> lkl, LinkedHashMap<Integer, Sale> lhm) {
+		long startTime = System.nanoTime();
+
+		for (Sale saleObj : lkl) {
+			lhm.put(saleObj.getId(), saleObj);
+		}
+
+		lhm.get(60844);
+		long endTime = System.nanoTime();
+
+		long duration = (endTime - startTime);
+		
+		getTime("Linked Hash Map", duration);
+	}
+	
+	public static void testTreeMap(LinkedList<Sale> lkl, TreeMap<Integer, Sale> tmap) {
+		long startTime = System.nanoTime();
+
+		for (Sale saleObj : lkl) {
+			tmap.put(saleObj.getId(), saleObj);
+		}
+
+		tmap.get(60844);
+		long endTime = System.nanoTime();
+
+		long duration = (endTime - startTime);
+
+		getTime("Tree Map", duration);
+	}
+
+	public static void testArrayList(LinkedList<Sale> lkl, ArrayList<Sale> arrl) {
+		long startTime = System.nanoTime();
+
+		for (Sale saleObj : lkl) {
+			arrl.add(saleObj);
+		}
+
+		arrl.get(60844);
+		long endTime = System.nanoTime();
+
+		long duration = (endTime - startTime);
+
+		getTime("Array List", duration);
+	}
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
   	HashMap<Integer, Sale> hmap = new HashMap<Integer, Sale>();
   	LinkedHashMap<Integer, Sale> lhm = new LinkedHashMap<Integer, Sale>();
   	TreeMap<Integer, Sale> tmap = new TreeMap<Integer, Sale>();
   	ArrayList<Sale> arrl = new ArrayList<Sale>(100000);
-
-		try(Stream<String> stream = Files.lines(Paths.get("src/sit/int690/first/sale.txt"))) {
-				long startTime = System.nanoTime();
-				stream.forEach((row) -> {
-		    	Sale saleObj = getRecord(row);
-		    	hmap.put(saleObj.getId(), saleObj);
-		    });
-	
-		    hmap.get(60844);
-				long endTime = System.nanoTime();
-	
-				long duration = (endTime - startTime);
-				System.out.println(duration);
-	  } catch(IOException e) {
-	      e.printStackTrace();
-	  }
-
-		try(Stream<String> stream = Files.lines(Paths.get("src/sit/int690/first/sale.txt"))) {
-			long startTime = System.nanoTime();
-			stream.forEach((row) -> {
-      	Sale saleObj = getRecord(row);
-      	lhm.put(saleObj.getId(), saleObj);
-      });
-
-			lhm.get(60844);
-			long endTime = System.nanoTime();
-
-			long duration = (endTime - startTime);
-			System.out.println(duration);
-	  } catch(IOException e) {
-	      e.printStackTrace();
-	  }
-
-		try(Stream<String> stream = Files.lines(Paths.get("src/sit/int690/first/sale.txt"))) {
-			long startTime = System.nanoTime();
-			stream.forEach((row) -> {
-      	Sale saleObj = getRecord(row);
-      	tmap.put(saleObj.getId(), saleObj);
-      });
-
-			tmap.get(60844);
-			long endTime = System.nanoTime();
-
-			long duration = (endTime - startTime);
-			System.out.println(duration);
-	  } catch(IOException e) {
-	      e.printStackTrace();
-	  }
-		
-		try(Stream<String> stream = Files.lines(Paths.get("src/sit/int690/first/sale.txt"))) {
-			long startTime = System.nanoTime();
-			stream.forEach((row) -> {
-	    	Sale saleObj = getRecord(row);
-	    	arrl.add(saleObj);
-	    });
-
-			arrl.get(60844);
-			long endTime = System.nanoTime();
-
-			long duration = (endTime - startTime);
-			System.out.println(duration);
-	  } catch(IOException e) {
-	      e.printStackTrace();
-	  }
+  	LinkedList<Sale> lkl =readFileStream("src/resources/sale.txt");
+  	
+  	testHashMap(lkl, hmap);
+  	testLinkedHashMap(lkl, lhm);
+  	testTreeMap(lkl, tmap);
+  	testArrayList(lkl, arrl);
 
 	}
 }
