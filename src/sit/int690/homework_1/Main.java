@@ -1,4 +1,4 @@
-package sit.int690.first;
+package sit.int690.homework_1;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;

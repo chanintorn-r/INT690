@@ -1,4 +1,4 @@
-package sit.int690.secound;
+package sit.int690.lab_2;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
