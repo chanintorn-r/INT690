@@ -4,6 +4,8 @@ public class Sale {
 	private int id;
 	private String no;
 	private String name;
+	final int SALE_TRANSECTION=20;
+	final int ITEM_SIZE=50;
 	
 	public Sale(int id, String no, String name) {
 		super();
