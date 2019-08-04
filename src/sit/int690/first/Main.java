@@ -2,6 +2,7 @@ package sit.int690.first;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.TreeMap;
@@ -24,6 +25,7 @@ public class Main {
   	HashMap<Integer, Sale> hmap = new HashMap<Integer, Sale>();
   	LinkedHashMap<Integer, Sale> lhm = new LinkedHashMap<Integer, Sale>();
   	TreeMap<Integer, Sale> tmap = new TreeMap<Integer, Sale>();
+  	ArrayList<Sale> arrl = new ArrayList<Sale>(100000);
 
 		try(Stream<String> stream = Files.lines(Paths.get("src/sit/int690/first/sale.txt"))) {
 				long startTime = System.nanoTime();
@@ -65,6 +67,22 @@ public class Main {
       });
 
 			tmap.get(60844);
+			long endTime = System.nanoTime();
+
+			long duration = (endTime - startTime);
+			System.out.println(duration);
+	  } catch(IOException e) {
+	      e.printStackTrace();
+	  }
+		
+		try(Stream<String> stream = Files.lines(Paths.get("src/sit/int690/first/sale.txt"))) {
+			long startTime = System.nanoTime();
+			stream.forEach((row) -> {
+	    	Sale saleObj = getRecord(row);
+	    	arrl.add(saleObj);
+	    });
+
+			arrl.get(60844);
 			long endTime = System.nanoTime();
 
 			long duration = (endTime - startTime);
