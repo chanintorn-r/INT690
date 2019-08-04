@@ -7,11 +7,9 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.TreeMap;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
 import java.util.stream.Stream;
 
-import javax.swing.text.StyledEditorKit.ForegroundAction;
+import model.Sale;
 
 
 
@@ -103,15 +101,16 @@ public class Main {
 
 		getTime("Array List", duration);
 	}
-	
+
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		LinkedList<Sale> lkl = readFileStream("src/resources/sale.txt");
+		
   	HashMap<Integer, Sale> hmap = new HashMap<Integer, Sale>();
   	LinkedHashMap<Integer, Sale> lhm = new LinkedHashMap<Integer, Sale>();
   	TreeMap<Integer, Sale> tmap = new TreeMap<Integer, Sale>();
   	ArrayList<Sale> arrl = new ArrayList<Sale>(100000);
-  	LinkedList<Sale> lkl =readFileStream("src/resources/sale.txt");
-  	
+
   	testHashMap(lkl, hmap);
   	testLinkedHashMap(lkl, lhm);
   	testTreeMap(lkl, tmap);
